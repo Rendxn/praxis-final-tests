@@ -7,9 +7,9 @@
     "clean": "rm -rf dist mochawesome-reports",
     "lint": "eslint test/**/*.{ts,js} src/**/*.{ts,js}",
     "build": "npm run clean && tsc",
+    "pretest": "npm run build",
     "test:api": "mocha -t 5000 --reporter mochawesome -r tsconfig-paths/register -r ts-node/register \"test/**/*.test.ts\"",
-    "test:ui": "npm run build && protractor dist/protractor/local.config.js",
-    "test": "npm run test:api && npm run test:ui"
+    "test:ui": "protractor protractor/launcher.js"
   },
   "repository": {
     "type": "git",
