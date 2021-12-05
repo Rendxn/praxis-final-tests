@@ -152,3 +152,8 @@ dist
 !.vscode/*.code-snippets
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode
+
+# Reports
+
+mochawesome-report/
+mochawesome-reports/
