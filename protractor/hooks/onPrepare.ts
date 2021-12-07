@@ -1,9 +1,10 @@
+import environment from 'config/environment'
 import {
   browser,
   ExpectedConditions,
   ProtractorExpectedConditions,
 } from 'protractor'
-import { LoginPage, HeaderPage } from '../../src/page'
+import { LoginPage, HeaderPage } from 'src/page'
 
 export const prepare = async () => {
   // ----------- browser -----------
@@ -16,7 +17,7 @@ export const prepare = async () => {
   const headerPage: HeaderPage = new HeaderPage()
   const loginPage: LoginPage = new LoginPage()
 
-  await browser.get('http://host.docker.internal:8080')
+  await browser.get(environment.SELENIUM_BASE_URL)
   await browser.wait(EC.urlContains('index.html'), 5000)
 
   await headerPage.openSignInModal()

@@ -1,5 +1,6 @@
+import environment from 'config/environment'
 import { del } from 'superagent'
 
 export const teardown = async () => {
-  await del('http://localhost:8080/api/customer/')
+  await del(`${environment.API_BASE_URL}/api/customer/`)
 }

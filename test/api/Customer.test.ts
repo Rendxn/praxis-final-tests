@@ -4,11 +4,12 @@ import * as chai from 'chai'
 import * as chaiJsonSchema from 'chai-json-schema'
 import { Customer } from 'src/model/Customer'
 import CustomerSchema from 'src/schema/Customer.schema'
+import environment from 'config/environment'
 
 chai.use(chaiJsonSchema)
 const { expect } = chai
 
-const baseUrl = 'http://localhost:8080/api'
+const baseUrl = `${environment.API_BASE_URL}/api`
 
 describe('Customer API tests', () => {
   const customerName = 'Test'

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { browser } from 'protractor'
-import { HeaderPage, LoginPage } from '../../src/page'
+import { HeaderPage, LoginPage } from 'src/page'
 
 describe('given the atsea page', () => {
   describe('when sign out', () => {

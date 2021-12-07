@@ -1,5 +1,6 @@
-import { Customer } from '../../src/model/Customer'
+import { Customer } from 'src/model/Customer'
 import { post } from 'superagent'
+import environment from 'config/environment'
 
 export const setup = async () => {
   const testCustomer: Customer = {
@@ -14,5 +15,5 @@ export const setup = async () => {
     role: 'USER',
   }
 
-  await post('http://localhost:8080/api/customer/').send(testCustomer)
+  await post(`${environment.API_BASE_URL}/api/customer/`).send(testCustomer)
 }
