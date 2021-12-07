@@ -6,6 +6,7 @@ require('ts-node').register({
   disableWarnings: true,
   fast: true,
   transpileOnly: true,
+  require: ['tsconfig-paths/register', 'dotenv/config'],
 })
 
 module.exports.config = require('./local.config.ts').config

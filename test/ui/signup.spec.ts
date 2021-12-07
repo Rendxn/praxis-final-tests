@@ -5,13 +5,14 @@ import {
   ExpectedConditions,
   ProtractorExpectedConditions,
 } from 'protractor'
-import { HeaderPage, SignUpPage } from '../../src/page'
+import { HeaderPage, SignUpPage } from 'src/page'
+import environment from 'config/environment'
 
 describe('given the atsea page', () => {
   const EC: ProtractorExpectedConditions = ExpectedConditions
 
   before(async () => {
-    await browser.get('http://host.docker.internal:8080')
+    await browser.get(environment.SELENIUM_BASE_URL)
     await browser.wait(EC.urlContains('index.html'), 5000)
   })
 

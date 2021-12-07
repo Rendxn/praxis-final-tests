@@ -4,7 +4,7 @@ import {
   ExpectedConditions,
   ProtractorExpectedConditions,
 } from 'protractor'
-import { ProductListPage, CheckoutPage, SuccessPage } from '../../src/page'
+import { ProductListPage, CheckoutPage, SuccessPage } from 'src/page'
 
 const EC: ProtractorExpectedConditions = ExpectedConditions
 
