@@ -7,4 +7,5 @@ require('ts-node').register({
   fast: true,
   transpileOnly: true,
 })
+
 module.exports.config = require('./local.config.ts').config

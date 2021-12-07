@@ -8,7 +8,7 @@
     "lint": "eslint test/**/*.{ts,js} src/**/*.{ts,js}",
     "build": "npm run clean && tsc",
     "pretest": "npm run build",
-    "test:api": "mocha -t 5000 --reporter mochawesome -r tsconfig-paths/register -r ts-node/register \"test/**/*.test.ts\"",
+    "test:api": "mocha -t 5000 --reporter mochawesome -r tsconfig-paths/register -r ts-node/register/transpile-only \"test/api/**/*.test.ts\"",
     "test:ui": "protractor protractor/launcher.js"
   },
   "repository": {

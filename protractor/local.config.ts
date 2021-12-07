@@ -7,9 +7,12 @@ export const config: Config = {
   SELENIUM_PROMISE_MANAGER: false,
   onPrepare: async () => {
     await browser.waitForAngularEnabled(false)
+    await browser.manage().window().maximize()
+    browser.manage().timeouts().implicitlyWait(0)
   },
   mochaOpts: {
     reporter: 'mochawesome-screenshots',
+    timeout: 30000,
   },
   multiCapabilities: [
     {
@@ -18,7 +21,7 @@ export const config: Config = {
       shardTestFiles: true,
       maxInstances: 1,
       chromeOptions: {
-        args: [],
+        args: ['--disable-popup-blocking', '--no-default-browser-check'],
       },
     },
     {
