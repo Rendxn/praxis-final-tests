@@ -7,6 +7,12 @@
     "moduleResolution": "node",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "plugins": [
+      {
+        "transform": "ts-auto-mock/transformer",
+        "cacheBetweenTests": false
+      }
+    ]
   }
 }
