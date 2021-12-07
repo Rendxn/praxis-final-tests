@@ -10,6 +10,8 @@ const { expect } = chai
 const baseUrl = 'http://localhost:8080/api'
 
 describe('Order API tests', () => {
+    let orderId: number
+
     describe('when creating an order', () => {
         const orderBody = {
             orderId: 1,
@@ -21,6 +23,7 @@ describe('Order API tests', () => {
             const { status, body } = await post(`${baseUrl}/order/`).send(orderBody)
             expect(status).to.equal(StatusCodes.CREATED)
             expect(body).to.have.property('orderId')
+            orderId = body.orderId
         })
 
         it('should throw CONFLICT status if the id is already in use', async () => {
@@ -47,7 +50,6 @@ describe('Order API tests', () => {
     })
 
     describe('when getting an order /api/order/:id', () => {
-        const orderId = 1
         const notFoundOrderId = 0
 
         it(`should return an order with id ${orderId}`, async () => {
@@ -67,10 +69,8 @@ describe('Order API tests', () => {
     })
 
     describe('when updating an order /api/order/:id', () => {
-        const orderId = 1
         const notFoundOrderId = 0
         const modifiedOrderBody = {
-            orderId: 1,
             orderDate: 1488311559000,
             customerId: 101010,
             productsOrdered: { "1": 1, "2": 1 }
@@ -80,7 +80,9 @@ describe('Order API tests', () => {
             const { status, body } = await put(`${baseUrl}/order/${orderId}`).send(modifiedOrderBody)
             expect(status).to.equal(StatusCodes.OK)
             expect(body).to.be.jsonSchema(OrderUpdateSchema)
-            expect(body).to.deep.equal(modifiedOrderBody)
+            expect(body.orderDate).to.equal(modifiedOrderBody.orderDate)
+            expect(body.customerId).to.equal(modifiedOrderBody.customerId)
+            expect(body.productsOrdered).to.deep.equal(modifiedOrderBody.productsOrdered)
         })
 
         it('should throw NOT_FOUND status if the order does not exist', async () => {
@@ -94,7 +96,6 @@ describe('Order API tests', () => {
     })
 
     describe('when deleting an order /api/order/:id', () => {
-        const orderId = 1
 
         it('should return NO_CONTENT status', async () => {
             const { status } = await del(`${baseUrl}/order/${orderId}`)
