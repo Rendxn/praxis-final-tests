@@ -1,17 +1,22 @@
-import { browser, Config } from 'protractor'
+import { Config } from 'protractor'
+import { setup, prepare, teardown } from './hooks'
 
 export const config: Config = {
   framework: 'mocha',
   specs: ['../test/ui/**/*.spec.ts'],
   seleniumAddress: 'http://0.0.0.0:4444/',
   SELENIUM_PROMISE_MANAGER: false,
+  beforeLaunch: async () => {
+    await setup()
+  },
   onPrepare: async () => {
-    await browser.waitForAngularEnabled(false)
-    await browser.manage().window().maximize()
-    browser.manage().timeouts().implicitlyWait(0)
+    await prepare()
+  },
+  afterLaunch: async () => {
+    await teardown()
   },
   mochaOpts: {
-    reporter: 'mochawesome-screenshots',
+    reporter: 'spec',
     timeout: 30000,
   },
   multiCapabilities: [

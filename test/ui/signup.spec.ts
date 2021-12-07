@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { del } from 'superagent'
+import { del, get } from 'superagent'
 import {
   browser,
   ExpectedConditions,
@@ -16,25 +16,36 @@ describe('given the atsea page', () => {
   })
 
   describe('when sign up', () => {
+    const newCustomer = {
+      username: 'r',
+      password: 'r',
+    }
+
     before(async () => {
       const headerPage: HeaderPage = new HeaderPage()
-      await headerPage.openRegisterModal()
-    })
 
-    // Remove created customers for idempotency
-    after(async () => {
-      await del(`http://localhost:8080/api/customer/`)
+      await headerPage.signOut()
+      await browser.sleep(2000)
+
+      await headerPage.openRegisterModal()
     })
 
     it('should congratulate the created user', async () => {
       const registerPage: SignUpPage = new SignUpPage()
-      await registerPage.register('123', '123')
+      await registerPage.register(newCustomer.username, newCustomer.password)
 
       await browser.wait(EC.visibilityOf(registerPage.successBtn), 5000)
 
       expect(await registerPage.getSuccessMessage()).to.equal(
         'Congratulations! Your account has been created!'
       )
+    })
+
+    after(async () => {
+      const { body } = await get(
+        `http://localhost:8080/api/customer/username=${newCustomer.username}`
+      )
+      await del(`http://localhost:8080/api/customer/${body.customerId}`)
     })
   })
 })
