@@ -1,5 +1,6 @@
-import { get, post } from 'superagent'
+import { del, get, post } from 'superagent'
 import { StatusCodes } from 'http-status-codes'
+import { Customer } from 'src/model/Customer'
 import * as chai from 'chai'
 import * as chaiJsonSchema from 'chai-json-schema'
 
@@ -10,12 +11,31 @@ const baseUrl = 'http://localhost:8080'
 
 describe('Login and Purchase API tests', () => {
     let token: string
-    describe('when logging in', () => {
+    let customerId: number
+    before(async () => {
+        const customerBody: Customer = {
+            customerId: 0,
+            name: "Sally Vallery",
+            address: "144 Townsend, San Francisco 99999",
+            email: "sally@example.com",
+            phone: "513 222 5555",
+            username: "gordon",
+            password: "gordonpass",
+            enabled: true,
+            role: "USER"
+        }
+        const { body } = await post(`${baseUrl}/api/customer/`).send(customerBody)
+        customerId = body.customerId
+    })
 
+    after(async () => {
+        await del(`${baseUrl}/api/customer/${customerId}`)
+    })
+    describe('when logging in', () => {
         describe('given a correct username and password combination', () => {
             const authBody = {
                 username: 'gordon',
-                password: 'gordonpassword'
+                password: 'gordonpass'
             }
             it('should return the authentication token', async () => {
                 const { status, body } = await post(`${baseUrl}/login/`).send(authBody)
@@ -25,7 +45,22 @@ describe('Login and Purchase API tests', () => {
             })
         })
 
-        describe('given a bad username and password combination', () => {
+        describe('given a bad username', () => {
+            const unauthorizedBody = {
+                username: 'badusername',
+                password: 'gordonpass'
+            }
+            it('should throw NOT_FOUND status', async () => {
+                try {
+                    await post(`${baseUrl}/login/`).send(unauthorizedBody)
+                } catch (error) {
+                    const { status } = error.response
+                    expect(status).to.equal(StatusCodes.NOT_FOUND)
+                }
+            })
+        })
+
+        describe('given a bad password', () => {
             const unauthorizedBody = {
                 username: 'gordon',
                 password: 'badpassword'
@@ -52,12 +87,14 @@ describe('Login and Purchase API tests', () => {
         })
 
         describe('not given an authentication token', () => {
-            it('should throw UNAUTHORIZED status', async () => {
+            const errorMessage = 'Missing or invalid Authorization header.'
+            it('should throw INTERNAL_SERVER_ERROR status', async () => {
                 try {
                     await get(`${baseUrl}/purchase/`)
                 } catch (error) {
-                    const { status } = error.response
-                    expect(status).to.equal(StatusCodes.UNAUTHORIZED)
+                    const { status, body } = error.response
+                    expect(status).to.equal(StatusCodes.INTERNAL_SERVER_ERROR)
+                    expect(body.message).to.equal(errorMessage)
                 }
             })
         })

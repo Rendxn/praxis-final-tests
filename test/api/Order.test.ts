@@ -71,7 +71,6 @@ describe('Order API tests', () => {
     describe('when updating an order /api/order/:id', () => {
         const notFoundOrderId = 0
         const modifiedOrderBody = {
-            orderId: 1,
             orderDate: 1488311559000,
             customerId: 101010,
             productsOrdered: { "1": 1, "2": 1 }
