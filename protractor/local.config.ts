@@ -16,7 +16,7 @@ export const config: Config = {
     await teardown()
   },
   mochaOpts: {
-    reporter: 'spec',
+    reporter: 'mochawesome-screenshots',
     timeout: 30000,
   },
   multiCapabilities: [
