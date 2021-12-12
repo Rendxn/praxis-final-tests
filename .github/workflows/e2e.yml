@@ -52,6 +52,7 @@ jobs:
 
   ui:
     name: UI tests
+    needs: api
 
     runs-on: ubuntu-latest
 

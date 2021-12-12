@@ -13,7 +13,7 @@ describe('given the atsea page', () => {
 
   before(async () => {
     await browser.get(environment.SELENIUM_BASE_URL)
-    await browser.wait(EC.urlContains('index.html'), 5000)
+    await browser.wait(EC.urlContains('index.html'), 10000)
   })
 
   describe('when sign up', () => {
@@ -35,7 +35,7 @@ describe('given the atsea page', () => {
       const registerPage: SignUpPage = new SignUpPage()
       await registerPage.register(newCustomer.username, newCustomer.password)
 
-      await browser.wait(EC.visibilityOf(registerPage.successBtn), 5000)
+      await browser.wait(EC.visibilityOf(registerPage.successBtn), 10000)
 
       expect(await registerPage.getSuccessMessage()).to.equal(
         'Congratulations! Your account has been created!'

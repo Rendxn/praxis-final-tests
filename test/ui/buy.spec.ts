@@ -25,7 +25,7 @@ describe('when buying an item', () => {
       describe('and fill checkout form', () => {
         before(async () => {
           const checkoutPage: CheckoutPage = new CheckoutPage()
-          await browser.wait(EC.visibilityOf(checkoutPage.form), 5000)
+          await browser.wait(EC.visibilityOf(checkoutPage.form), 10000)
 
           await checkoutPage.fillCreditCardInfo({
             cardNumber: '5000 0000 0000 0000',

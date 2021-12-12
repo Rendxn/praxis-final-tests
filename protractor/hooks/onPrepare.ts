@@ -18,7 +18,7 @@ export const prepare = async () => {
   const loginPage: LoginPage = new LoginPage()
 
   await browser.get(environment.SELENIUM_BASE_URL)
-  await browser.wait(EC.urlContains('index.html'), 5000)
+  await browser.wait(EC.urlContains('index.html'), 10000)
 
   await headerPage.openSignInModal()
   await browser.sleep(1000)

@@ -26,7 +26,11 @@ export const config: Config = {
       shardTestFiles: true,
       maxInstances: 1,
       chromeOptions: {
-        args: ['--disable-popup-blocking', '--no-default-browser-check'],
+        args: [
+          '--disable-popup-blocking',
+          '--no-default-browser-check',
+          '--headless',
+        ],
       },
     },
     {
@@ -35,7 +39,7 @@ export const config: Config = {
       shardTestFiles: true,
       maxInstances: 1,
       'moz:firefoxOptions': {
-        args: [],
+        args: ['-headless'],
       },
     },
   ],
