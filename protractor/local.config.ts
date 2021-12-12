@@ -25,6 +25,7 @@ export const config: Config = {
       name: 'chrome-tests',
       shardTestFiles: true,
       maxInstances: 1,
+      acceptInsecureCerts: true,
       chromeOptions: {
         args: [
           '--disable-popup-blocking',
@@ -38,6 +39,7 @@ export const config: Config = {
       name: 'firefox-tests',
       shardTestFiles: true,
       maxInstances: 1,
+      acceptInsecureCerts: true,
       'moz:firefoxOptions': {
         args: ['-headless'],
       },
