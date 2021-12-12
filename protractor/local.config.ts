@@ -17,6 +17,10 @@ export const config: Config = {
   },
   mochaOpts: {
     reporter: 'mochawesome-screenshots',
+    reporterOptions: {
+      reportName: 'atsea',
+      multiReport: true,
+    },
     timeout: 30000,
   },
   multiCapabilities: [
