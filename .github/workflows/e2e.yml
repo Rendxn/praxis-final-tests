@@ -35,10 +35,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_API_BASE_URL: ${{ secrets.BASE_URL }}
+          envkey_SELENIUM_BASE_URL: ${{ secrets.BASE_URL }}
+
       - name: Running API tests
-        env:
-          BASE_URL: ${{ secrets.BASE_URL }}
-          SELENIUM_BASE_URL: ${{ secrets.BASE_URL }}
         run: npm run test:api
 
       - name: Upload reports to AWS bucket
@@ -78,6 +81,12 @@ jobs:
 
       - name: Starting Selenium grid
         run: docker-compose up -d
+
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_API_BASE_URL: ${{ secrets.BASE_URL }}
+          envkey_SELENIUM_BASE_URL: ${{ secrets.BASE_URL }}
 
       - name: Running UI tests
         run: npm run test:ui

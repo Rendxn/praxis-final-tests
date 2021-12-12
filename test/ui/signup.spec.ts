@@ -44,9 +44,9 @@ describe('given the atsea page', () => {
 
     after(async () => {
       const { body } = await get(
-        `http://localhost:8080/api/customer/username=${newCustomer.username}`
+        `${environment.API_BASE_URL}/api/customer/username=${newCustomer.username}`
       )
-      await del(`http://localhost:8080/api/customer/${body.customerId}`)
+      await del(`${environment.API_BASE_URL}/api/customer/${body.customerId}`)
     })
   })
 })

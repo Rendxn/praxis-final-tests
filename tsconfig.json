@@ -11,12 +11,6 @@
     "paths": {
       "src/*": ["./src/*"],
       "test/*": ["./test/*"]
-    },
-    "plugins": [
-      {
-        "transform": "ts-auto-mock/transformer",
-        "cacheBetweenTests": false
-      }
-    ]
+    }
   }
 }
