@@ -42,6 +42,8 @@ jobs:
           envkey_SELENIUM_BASE_URL: ${{ secrets.BASE_URL }}
 
       - name: Running API tests
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: '0'
         run: npm run test:api
 
       - name: Upload reports to AWS bucket
@@ -89,6 +91,8 @@ jobs:
           envkey_SELENIUM_BASE_URL: ${{ secrets.BASE_URL }}
 
       - name: Running UI tests
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: '0'
         run: npm run test:ui
 
       - name: Upload reports to AWS bucket
