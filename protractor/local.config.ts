@@ -29,8 +29,7 @@ export const config: Config = {
         args: [
           '--disable-popup-blocking',
           '--no-default-browser-check',
-          '--headless',
-          '--ignore-certificate-errors'
+          '--ignore-certificate-errors',
         ],
       },
     },
