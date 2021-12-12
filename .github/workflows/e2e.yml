@@ -1,7 +1,7 @@
 on:
   schedule:
-  - cron : 0 0 * * *
-	repository_dispatch:
+    - cron: 0 0 * * *
+  repository_dispatch:
     types: [deployed]
   workflow_dispatch:
 
@@ -17,31 +17,71 @@ jobs:
       AWS_REGION: us-east-2
 
     steps:
+      - name: Checkout to branch ${{ env.DEFAULT_BRANCH }}
+        uses: actions/checkout@v2
 
-    - name: Checkout to branch ${{ env.DEFAULT_BRANCH }}
-      uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.NODE_VERSION }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Running API tests
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          SELENIUM_BASE_URL: ${{ secrets.BASE_URL }}
+        run: npm run test:api
 
-    - name: Running API tests
-      env:
-        BASE_URL: ${{ secrets.BASE_URL }}
-        SELENIUM_BASE_URL: ${{ secrets.BASE_URL }}
-      run: npm run test:api
+      - name: Upload reports to AWS bucket
+        run: aws s3 sync ./mochawesome-report ${{ secrets.AWS_BUCKET }}/api-tests-report
+        if: ${{ always() }}
 
-    - name: Upload reports to AWS bucket
-      run: aws s3 sync ./mochawesome-report ${{ secrets.AWS_BUCKET }}/api-tests-report
-      if: ${{ always() }}
+  ui:
+    name: UI tests
+
+    runs-on: ubuntu-latest
+
+    env:
+      DEFAULT_BRANCH: master
+      NODE_VERSION: 16.x
+      AWS_REGION: us-east-2
+
+    steps:
+      - name: Checkout to branch ${{ env.DEFAULT_BRANCH }}
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx webdriver-manager update
+
+      - name: Starting Selenium grid
+        run: docker-compose up -d
+
+      - name: Running UI tests
+        run: npm run test:ui
+
+      - name: Upload reports to AWS bucket
+        run: aws s3 sync ./mochawesome-reports ${{ secrets.AWS_BUCKET }}/ui-tests-report
+        if: ${{ always() }}
