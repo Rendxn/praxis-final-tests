@@ -25,12 +25,12 @@ export const config: Config = {
       name: 'chrome-tests',
       shardTestFiles: true,
       maxInstances: 1,
-      acceptInsecureCerts: true,
       chromeOptions: {
         args: [
           '--disable-popup-blocking',
           '--no-default-browser-check',
           '--headless',
+          '--ignore-certificate-errors'
         ],
       },
     },
