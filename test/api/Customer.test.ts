@@ -54,7 +54,7 @@ describe('Customer API tests', () => {
       it('should return a customer', async () => {
         const { status, body } = await get(`${baseUrl}/customer/${customerId}`)
 
-        expect(status).to.equal(StatusCodes.CREATED)
+        expect(status).to.equal(StatusCodes.OK)
         expect(body).to.be.jsonSchema(CustomerSchema)
       })
 
